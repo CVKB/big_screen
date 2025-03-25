@@ -1,12 +1,12 @@
 <template>
-  <div class="container">
+  <dv-border-box6 class=" table container">
     <dv-scroll-board ref="scrollBoard" :config="config" style="width:100%;height:100%" />
-  </div>
+  </dv-border-box6>
 </template>
 
 <script lang="ts" setup>
 import { reactive, ref } from 'vue'; // 导入 reactive 和 ref
-import type { ScrollBoard } from '@kjgl77/datav-vue3/index';
+import type { ScrollBoard } from '@kjgl77/datav-vue3';
 
 // 使用 reactive 创建响应式对象
 const config = reactive({
@@ -35,36 +35,26 @@ const config = reactive({
     ['行6列1', '<span style="color:#ff9f7f;">行6列2</span>', '行6列3'],
     ['行7列1', '行7列2', '<span style="color:#fb7293;">行7列3</span>'],
     ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['行8列1', '<span style="color:#e062ae;">行8列2</span>', '行8列3'],
-    ['<span style="color:#e690d1;">行9列1</span>', '行9列2', '行9列3'],
-    ['行10列1', '<span style="color:#e7bcf3;">行10列2</span>', '行10列3'],
+    ['行9列1', '<span style="color:#e7bcf3;">行10列2</span>', '行10列3'],
   ],
   index: true,
-  rowNum: 25,
-  headerHeight: 50,
-  columnWidth: [50],
+  rowNum: 15,
+  headerHeight: 30,
+  columnWidth: [50, 100, 100, 100],
+  indexHeader: "序号",
+  oddRowBGC: "",
+  evenRowBGC: "",
+  headerBGC: "",
   align: ['center'],
 });
 
-const scrollBoard = ref<InstanceType<typeof ScrollBoard>>(null);
+const scrollBoard = ref<InstanceType<typeof ScrollBoard>>();
 </script>
 
 <style scoped>
 .container {
-  width: 100%;
-  height: 100%;
-  padding: 1.25rem;
+  width: 60vw;
+  height: 40vh;
   display: flex;
   flex-direction: column;
   justify-content: center;

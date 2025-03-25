@@ -22,4 +22,11 @@ export default defineConfig({
     host: '0.0.0.0',
     port: 9527,
   },
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@use "@/styles/scss/utils.scss" as *;`, // 路径根据项目调整
+      },
+    },
+  },
 })

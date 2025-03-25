@@ -1,52 +1,42 @@
 <template>
-  <AdaptiveView v-if="isMounted">
-    <dv-border-box11 class="head" :animate="true">
-      <span>这是什么地方啊！</span>
-    </dv-border-box11>
-    <dv-border-box12 class="borderA" :animate="true">
-      <!-- 上部分 -->
-      <div class="top">
-        <dv-border-box6 class=" table">
-          <IndexData6></IndexData6>
-        </dv-border-box6>
-        <div class="right">
-          <div>
-            <dv-border-box3 class="frameright">
-              <IndexData2></IndexData2>
-            </dv-border-box3>
-          </div>
-          <div>
-            <dv-border-box3 class="frameright">
-              <IndexData3></IndexData3>
-            </dv-border-box3>
-          </div>
-        </div>
-      </div>
-      <!-- 下部分  -->
-      <div class="boxbottom">
+  <dv-border-box11 class="head" title="WMS物料超期报表" :title-width="400" :animate="false">
+    <dv-border-box10 class="head_sbu">
+      SBU4
+    </dv-border-box10>
+  </dv-border-box11>
+  <dv-border-box12 class="borderA" :animate="true">
+    <!-- 上部分 -->
+    <div class="top">
+      <IndexData6></IndexData6>
+      <div class="right">
         <div>
-          <dv-border-box8 class="framebottom">
-            <IndexData7></IndexData7>
-          </dv-border-box8>
+          <IndexData8></IndexData8>
         </div>
         <div>
-          <dv-border-box8 class="framebottom">
-            <IndexData8></IndexData8>
-          </dv-border-box8>
+          <div>123123</div>
+          <div>123123</div>
+          <div>123123</div>
+          <div>123123</div>
         </div>
       </div>
-    </dv-border-box12>
-  </AdaptiveView>
+    </div>
+    <!-- 下部分  -->
+    <div class="boxbottom">
+      <div>
+        <IndexData7></IndexData7>
+      </div>
+      <div>
+        <IndexData8></IndexData8>
+      </div>
+    </div>
+  </dv-border-box12>
 </template>
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick } from "vue";
-import IndexData2 from './IndexData2.vue';
-import IndexData3 from './IndexData3.vue';
 import IndexData6 from './IndexData6.vue';
 import IndexData7 from './IndexData7.vue';
 import IndexData8 from './IndexData8.vue';
-import AdaptiveView from '@/components/AdaptiveView.vue';
 
 // 定义响应式数据
 const isMounted = ref(false);
@@ -58,46 +48,44 @@ onMounted(() => {
 });
 </script>
 
-<style scoped>
+<style lang="scss" scoped>
 .head {
-  height: 100px;
-  position: fixed;
-  top: 0;
-  left: 0;
+  height: vh(100);
+  width: vw(1280);
+  padding-left: 20px;
+  display: flex !important;
+  /* 强制覆盖 */
+  justify-content: flex-start !important;
+  align-items: center !important;
+  position: relative;
+  /* 确保 Flex 生效 */
+}
+
+.head_sbu {
+  font-size: 16px;
+  font-weight: bold;
+  width: 50px;
+  height: 50px;
+  margin: 0;
+  /* 清除默认 margin */
+}
+
+.borderA {
+  height: vh(900);
   width: 100%;
-}
-
-.right {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-}
-
-.frameright {
-  height: 300px;
-  width: 600px;
-  padding: 1.25rem;
-  background-color: #011933FF;
 }
 
 .top {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 
-.table {
-  height: 550px;
-  width: 65%;
-  margin-top: 10px;
-  margin: 20px;
-}
 
-.box {
+.right {
   display: flex;
+  flex-direction: column;
   justify-content: space-between;
-  align-items: center;
-  min-width: 100%;
-  min-height: 100px;
 }
 
 .boxbottom {
@@ -112,17 +100,5 @@ onMounted(() => {
 /* 每个子元素左右 margin 自动分配 */
 .boxbottom>* {
   margin: 0 auto;
-}
-
-.borderA {
-  height: 100%;
-  width: 100%;
-}
-
-.framebottom {
-  height: 380px;
-  width: 461.25px;
-  margin-top: 10px;
-  background-color: #011933FF;
 }
 </style>
