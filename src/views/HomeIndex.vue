@@ -1,17 +1,15 @@
 <template>
-  <dv-border-box11 class="head" title="WMS物料超期报表" :title-width="400" :animate="false">
-    <dv-border-box10 class="head_sbu">
-      SBU4
-    </dv-border-box10>
+  <dv-border-box11 class="head" title="WMS物料超期报表" :title-width="600" :animate="false">
+    <div class="headdiv">
+      <HeadView></HeadView>
+    </div>
   </dv-border-box11>
   <dv-border-box12 class="borderA" :animate="true">
     <!-- 上部分 -->
     <div class="top">
       <IndexData6></IndexData6>
       <div class="right">
-        <div>
-          <IndexData8></IndexData8>
-        </div>
+        <IndexData9></IndexData9>
         <div>
           <div>123123</div>
           <div>123123</div>
@@ -23,10 +21,10 @@
     <!-- 下部分  -->
     <div class="boxbottom">
       <div>
-        <IndexData7></IndexData7>
+        <MaterialTypeDistribution></MaterialTypeDistribution>
       </div>
       <div>
-        <IndexData8></IndexData8>
+        <MaterialStatus></MaterialStatus>
       </div>
     </div>
   </dv-border-box12>
@@ -35,8 +33,10 @@
 <script lang="ts" setup>
 import { ref, onMounted, nextTick } from "vue";
 import IndexData6 from './IndexData6.vue';
-import IndexData7 from './IndexData7.vue';
-import IndexData8 from './IndexData8.vue';
+import MaterialTypeDistribution from './MaterialTypeDistribution.vue';
+import MaterialStatus from './MaterialStatus.vue';
+import IndexData9 from './IndexData9.vue';
+import HeadView from './HeadView.vue';
 
 // 定义响应式数据
 const isMounted = ref(false);
@@ -49,25 +49,20 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
+/* 让 box11（.head）成为 Flex 容器，使 box10（.head_sbu）垂直居中 */
 .head {
-  height: vh(100);
-  width: vw(1280);
-  padding-left: 20px;
-  display: flex !important;
-  /* 强制覆盖 */
-  justify-content: flex-start !important;
-  align-items: center !important;
-  position: relative;
-  /* 确保 Flex 生效 */
+  height: vh(120);
+  width: 100%;
+  display: flex;
+
 }
 
-.head_sbu {
-  font-size: 16px;
-  font-weight: bold;
-  width: 50px;
-  height: 50px;
-  margin: 0;
-  /* 清除默认 margin */
+.headdiv {
+  width: 100% !important;
+  height: 100%;
+  display: flex;
+  flex: 1;
+  align-items: center !important;
 }
 
 .borderA {
@@ -78,7 +73,6 @@ onMounted(() => {
 .top {
   display: flex;
   flex-direction: row;
-  flex-wrap: wrap;
 }
 
 

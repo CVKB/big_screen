@@ -6,6 +6,7 @@ import 'element-plus/dist/index.css'
 import "././mock/index.js"
 import router from './router'
 import App from './App.vue'
+import 'virtual:uno.css'
 
 const app = createApp(App)
 app.use(DataVVue3)
