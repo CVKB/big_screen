@@ -29,6 +29,9 @@ importers:
       element-plus:
         specifier: ^2.9.6
         version: 2.9.6(vue@3.5.13(typescript@5.8.2))
+      faker:
+        specifier: ^6.6.6
+        version: 6.6.6
       lodash:
         specifier: ^4.17.21
         version: 4.17.21
@@ -1588,6 +1591,10 @@ packages:
 
   exsolve@1.0.4:
     resolution: {integrity: sha512-xsZH6PXaER4XoV+NiT7JHp1bJodJVT+cxeSH1G0f0tlT0lJqYuHUP3bUx2HtfTDvOagMINYp8rsqusxud3RXhw==}
+
+  faker@6.6.6:
+    resolution: {integrity: sha512-wLTv2a28wjUyWkbnX7u/ABZBkUkIF2fCd73V6P2oFqEGEktDfzWx4UxrSqtPRw0xPRAcjeAOIiJWqZm3pP4u3g==, tarball: https://registry.npmmirror.com/faker/-/faker-5.5.3.tgz}
+    deprecated: '[WARNING] Use 5.5.3 instead of 6.6.6, reason: Please use https://github.com/MilosPaunovic/community-faker instead'
 
   fast-deep-equal@3.1.3:
     resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
@@ -4480,6 +4487,8 @@ snapshots:
   expect-type@1.2.0: {}
 
   exsolve@1.0.4: {}
+
+  faker@6.6.6: {}
 
   fast-deep-equal@3.1.3: {}
 

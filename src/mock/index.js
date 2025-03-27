@@ -1,4 +1,5 @@
 import Mock from "mockjs"
+// import { faker } from 'faker';
 Mock.setup({
     timeout: 1000
     })
@@ -6,8 +7,8 @@ Mock.setup({
     Mock.mock("/api/info", "get", function() {
       // 生成300条随机数据
       const data = [];
-      const statusDescriptions = ['正常', '即将过期', '已过期', '已重检', '待处理'];
-      const recheckResults = ['合格', '不合格', '待检', '已报废', '延期使用'];
+      const statusDescriptions = ['已处理', '未处理', '已完成'];
+      const recheckResults = ['合格', '不合格', '待检'];
 
       for (let i = 0; i < 300; i++) {
         const overdueDays = Math.floor(Math.random() * 30);
@@ -15,18 +16,19 @@ Mock.setup({
         expirationDate.setDate(expirationDate.getDate() + Math.floor(Math.random() * 60) - 30);
 
         data.push([
-          expirationDate.toLocaleDateString(),
-          `BATCH-${Math.floor(Math.random() * 10000).toString().padStart(4, '0')}`,
-          `MAT-${Math.floor(Math.random() * 100000).toString().padStart(6, '0')}`,
-          `物料描述样例-${Math.floor(Math.random() * 100)}`,
-          Math.floor(Math.random() * 1000),
-          `WH-${String.fromCharCode(65 + Math.floor(Math.random() * 6))}-${Math.floor(Math.random() * 100)}`,
-          overdueDays > 0 ? overdueDays : 0,
-          `SUP-${Math.floor(Math.random() * 1000).toString().padStart(3, '0')}`,
-          `供应商${Math.floor(Math.random() * 50)}有限公司`,
-          new Date(expirationDate.getTime() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),
-          recheckResults[Math.floor(Math.random() * recheckResults.length)],
-          statusDescriptions[Math.floor(Math.random() * statusDescriptions.length)]
+          expirationDate.toLocaleDateString(),//到期时间
+          Math.random().toString().slice(2, 9).padStart(10, '0'),
+          `20-${Math.floor(Math.random() * 100000).toString().padStart(6, '0')}-000-R000`,
+          'Test123',//物料描述
+          Math.floor(Math.random() * 1000),//数量
+          `WH-${String.fromCharCode(65 + Math.floor(Math.random() * 6))}-${Math.floor(Math.random() * 100)}`,//位置
+          overdueDays > 0 ? overdueDays : 0,//超期天数
+          Math.random().toString().slice(2, 9).padStart(10, '0'),//供应商
+          `${Math.floor(Math.random() * 50)}`,//供应商名称
+          new Date(expirationDate.getTime() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),//计划重检
+          new Date(expirationDate.getTime() - 7 * 24 * 60 * 60 * 1000).toLocaleDateString(),//实际重检
+          recheckResults[Math.floor(Math.random() * recheckResults.length)],//重检结果
+          statusDescriptions[Math.floor(Math.random() * statusDescriptions.length)]//状态描述
         ]);
       }
 
@@ -35,6 +37,7 @@ Mock.setup({
         data: data
       };
     });
+
 Mock.mock("/api/info2", "get", {  //环形图接口
     code: 200,
     data: [

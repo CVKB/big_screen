@@ -26,7 +26,6 @@ const loading1 = ref(true);          // 加载状态
 const refecharts = ref<HTMLElement | null>(null);  // ECharts DOM引用
 const myChart = ref<ECharts | null>(null); // 图表实例
 let intervalId: number | null = null; // 定时器ID
-const animationDuration = 1000; // 动画持续时间(ms)
 
 // 初始化图表 - 动态排序条形图
 const echartsfun = (value: ChartData) => {
@@ -34,6 +33,7 @@ const echartsfun = (value: ChartData) => {
     console.error('DOM 元素未找到');
     return;
   }
+  console.log(value.data);
 
   // 如果图表实例已存在，先销毁
   if (myChart.value) {
@@ -69,75 +69,102 @@ const echartsfun = (value: ChartData) => {
 
   // 图表配置项，使用正确的类型
   const option: EChartsOption = {
+    // 标题配置
     title: {
-      text: '超期物料处理状态对比',//标题
-      left: 'center',
-      textStyle: {
-        color: '#FFFFFFFF',
-        fontSize: 18
+      text: '超期物料处理状态分布图', // 主标题文本
+      left: 'center',      // 标题水平居中
+      textStyle: {         // 标题文本样式
+        color: '#FFFFFF', // 修改为纯白色（去掉透明度）
+        fontSize: 18,     // 增大字体大小
+        fontWeight: 'bold', // 加粗
       }
     },
+    // 图表网格配置
     grid: {
-      left: '3%',
-      right: '4%',
-      bottom: '3%',
-      containLabel: true
+      left: '10%',    // 图表与容器左侧的距离（为Y轴长标签留空间）
+      right: '10%',   // 图表与容器右侧的距离（为数值标签留空间）
+      bottom: '5%',   // 图表与容器底部的距离
+      top: '15%',     // 图表与容器顶部的距离（防止标题与图表重叠）
+      containLabel: true // 网格区域是否包含坐标轴的刻度标签
     },
+    // X轴配置（数值轴）
     xAxis: {
-      type: 'value',
+      type: 'value',  // 数值轴类型
       axisLabel: {
-        formatter: '{value}'
+        color: '#FFFFFF', // 标签颜色
+        fontSize: 14,
+      },
+      boundaryGap: ['0%', '20%'], // 坐标轴两端空白策略
+      splitLine: {    // 分隔线配置
+        show: true   // 显示网格线（X轴方向）
       }
     },
+
+    // Y轴配置（类目轴）
     yAxis: {
-      type: 'category',
-      data: categories,
+      type: 'category', // 类目轴类型
+      data: categories, // 类目数据（物料名称数组）
       axisLabel: {
-        interval: 0
+        color: '#FFFFFF',
+        fontSize: 14,
       },
-      animationDuration: animationDuration,
-      animationDurationUpdate: animationDuration
     },
+
+    // 系列列表（这里只有一个柱状图系列）
     series: [{
-      name: '数值',
-      type: 'bar',
-      data: values,
+      name: '数值',    // 系列名称（用于提示框和图例）
+      type: 'bar',    // 柱状图类型
+      data: values,   // 系列数据（对应Y轴类别的数值）
       label: {
         show: true,
         position: 'right',
-        formatter: '{c}'
+        formatter: '{c}',
+        color: '#FFFFFF',
+        fontSize: 16,
+        backgroundColor: 'rgba(0,0,0,0.7)',
       },
-      itemStyle: {
+      itemStyle: {     // 图形样式
         color: (params) => getItemColor(params.dataIndex),
-        borderRadius: [0, 4, 4, 0]
+        borderRadius: [0, 4, 4, 0] // 柱条圆角（右上和右下角）
       },
-      animationDuration: animationDuration,
-      animationDurationUpdate: animationDuration,
-      animationEasing: 'linear',
-      animationEasingUpdate: 'linear'
     }],
-    animationDuration: animationDuration,
-    animationDurationUpdate: animationDuration,
-    animationEasing: 'linear' as const,
-    animationEasingUpdate: 'linear' as const
+    // 提示框配置
+    tooltip: {
+      show: true,
+      trigger: 'axis',
+      backgroundColor: 'rgba(50,50,50,0.7)', // 背景色
+      borderColor: '#FFFFFF',
+      borderWidth: 1,
+      textStyle: {
+        color: '#FFFFFF',
+        fontSize: 14,
+        lineHeight: 24
+      },
+      axisPointer: {
+        type: 'shadow',
+        shadowStyle: {
+          color: 'rgba(150,150,150,0.2)'
+        }
+      },
+    }
   };
-
   // 设置图表选项
   if (option) {
     myChart.value?.setOption(option);
   }
 
+  // 窗口大小改变时重新调整图表大小
+  window.addEventListener('resize', () => {
+    myChart.value?.resize();
+  });
+
   // 模拟数据变化，实现动态排序效果
   const updateChart = () => {
-    // 随机修改部分数据
     const newData = [...sourceData];
     const randomIndex = Math.floor(Math.random() * newData.length);
-    newData[randomIndex].value = Math.round(newData[randomIndex].value * (0.9 + Math.random() * 0.2));
+    newData[randomIndex].value = Math.round(newData[randomIndex].value * (Math.random() * 0.5 + 0.7));
 
-    // 重新排序
     newData.sort((a, b) => b.value - a.value);
-
-    // 更新图表
     myChart.value?.setOption({
       yAxis: {
         data: newData.map(item => item.name)
@@ -152,7 +179,7 @@ const echartsfun = (value: ChartData) => {
   if (intervalId) {
     clearInterval(intervalId);
   }
-  intervalId = setInterval(updateChart, 3000);
+  intervalId = setInterval(updateChart, 2000);
 };
 
 // 获取数据
@@ -160,6 +187,7 @@ const getdata = async () => {
   try {
     const { data } = await info3();
     if (data.code === 200) {
+      console.log(data.data);
       loading1.value = false;
       nextTick(() => {
         if (refecharts.value) {
@@ -186,6 +214,10 @@ onBeforeUnmount(() => {
   if (myChart.value) {
     myChart.value.dispose();
   }
+  // 移除窗口大小改变事件监听
+  window.removeEventListener('resize', () => {
+    myChart.value?.resize();
+  });
 });
 </script>
 
@@ -194,24 +226,24 @@ onBeforeUnmount(() => {
   width: 90%;
   height: 90%;
   font-size: vh(16);
-  align-items: center !important;
-  justify-content: center !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .box {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center !important;
-  justify-content: center !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .BorderBox {
-  width: vw(450);
+  width: 45%;
   height: vh(300);
   max-width: 100%; // 限制最大宽度
   max-height: 100%; // 限制最大高度
-  align-items: center !important;
-  justify-content: center !important;
+  align-items: center;
+  justify-content: center;
 }
 </style>

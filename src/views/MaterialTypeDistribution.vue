@@ -26,7 +26,6 @@ const loading1 = ref(true);          // 加载状态
 const refecharts = ref<HTMLElement | null>(null);  // ECharts DOM引用
 const myChart = ref<ECharts | null>(null); // 图表实例
 let intervalId: number | null = null; // 定时器ID
-const animationDuration = 1000; // 动画持续时间(ms)
 
 // 初始化图表 - 动态排序条形图
 const echartsfun = (value: ChartData) => {
@@ -53,11 +52,6 @@ const echartsfun = (value: ChartData) => {
   const categories = sourceData.map(item => item.name);
   const values = sourceData.map(item => item.value);
 
-  // 计算最大值，用于动态调整X轴范围
-  const maxValue = Math.max(...values);
-  // 设置X轴最大值比数据最大值大20%，并向上取整为整数
-  const xAxisMax = Math.ceil(maxValue * 1.2);
-
   // 定义正确的颜色渐变函数类型
   const getItemColor = (dataIndex: number) => {
     const colorList = [
@@ -77,14 +71,14 @@ const echartsfun = (value: ChartData) => {
   const option: EChartsOption = {
     // 标题配置
     title: {
-      text: '物料超期分布', // 主标题文本
+      text: '超期物料处理状态分布图', // 主标题文本
       left: 'center',      // 标题水平居中
       textStyle: {         // 标题文本样式
-        color: '#FFFFFFFF', // 标题颜色（白色带透明度）
-        fontSize: 18       // 标题字体大小
+        color: '#FFFFFF', // 修改为纯白色（去掉透明度）
+        fontSize: 18,     // 增大字体大小
+        fontWeight: 'bold', // 加粗
       }
     },
-
     // 图表网格配置
     grid: {
       left: '10%',    // 图表与容器左侧的距离（为Y轴长标签留空间）
@@ -93,17 +87,14 @@ const echartsfun = (value: ChartData) => {
       top: '15%',     // 图表与容器顶部的距离（防止标题与图表重叠）
       containLabel: true // 网格区域是否包含坐标轴的刻度标签
     },
-
     // X轴配置（数值轴）
     xAxis: {
       type: 'value',  // 数值轴类型
-      axisLabel: {    // 坐标轴刻度标签
-        formatter: '{value}' // 标签格式器，直接显示数值
+      axisLabel: {
+        color: '#FFFFFF', // 标签颜色
+        fontSize: 14,
       },
-      max: xAxisMax, // 坐标轴最大值（动态计算得出）
-      boundaryGap: ['0%', '30%'], // 坐标轴两端空白策略
-      // 第一个参数0%表示起始不留白
-      // 第二个参数50%表示末端留50%的空白区
+      boundaryGap: ['0%', '20%'], // 坐标轴两端空白策略
       splitLine: {    // 分隔线配置
         show: true   // 显示网格线（X轴方向）
       }
@@ -113,14 +104,10 @@ const echartsfun = (value: ChartData) => {
     yAxis: {
       type: 'category', // 类目轴类型
       data: categories, // 类目数据（物料名称数组）
-      axisLabel: {      // 坐标轴刻度标签
-        interval: 0,    // 强制显示所有标签（不自动间隔）
-        width: 100,     // 标签文本最大宽度（像素）
-        overflow: 'truncate', // 文本超出时截断处理
-        ellipsis: '...' // 截断时显示的省略符号
+      axisLabel: {
+        color: '#FFFFFF',
+        fontSize: 14,
       },
-      animationDuration: animationDuration,          // 初始动画时长
-      animationDurationUpdate: animationDuration   // 数据更新动画时长
     },
 
     // 系列列表（这里只有一个柱状图系列）
@@ -128,35 +115,37 @@ const echartsfun = (value: ChartData) => {
       name: '数值',    // 系列名称（用于提示框和图例）
       type: 'bar',    // 柱状图类型
       data: values,   // 系列数据（对应Y轴类别的数值）
-      label: {        // 图形上的文本标签
-        show: true,   // 显示标签
-        position: 'right', // 标签位置（柱条右侧）
-        formatter: '{c}',  // 标签内容格式器（c表示数据值）
-        color: '#FFFFFFFF' // 标签文字颜色（白色）
+      label: {
+        show: true,
+        position: 'right',
+        formatter: '{c}',
+        color: '#FFFFFF',
+        fontSize: 16,
+        backgroundColor: 'rgba(0,0,0,0.7)',
       },
       itemStyle: {     // 图形样式
-        // 柱条颜色（使用动态渐变色函数）
         color: (params) => getItemColor(params.dataIndex),
         borderRadius: [0, 4, 4, 0] // 柱条圆角（右上和右下角）
       },
-      animationDuration: animationDuration,          // 初始动画时长
-      animationDurationUpdate: animationDuration,   // 数据更新动画时长
-      animationEasing: 'linear',      // 初始动画缓动效果
-      animationEasingUpdate: 'linear' // 更新动画缓动效果
     }],
-
-    // 全局动画配置
-    animationDuration: animationDuration,          // 初始动画时长
-    animationDurationUpdate: animationDuration,   // 数据更新动画时长
-    animationEasing: 'linear' as const,      // 初始动画缓动效果
-    animationEasingUpdate: 'linear' as const, // 更新动画缓动效果
-
     // 提示框配置
     tooltip: {
-      trigger: 'axis',      // 触发类型（坐标轴触发）
-      axisPointer: {        // 坐标轴指示器配置
-        type: 'shadow'      // 阴影指示器类型
-      }
+      show: true,
+      trigger: 'axis',
+      backgroundColor: 'rgba(50,50,50,0.7)', // 背景色
+      borderColor: '#FFFFFF',
+      borderWidth: 1,
+      textStyle: {
+        color: '#FFFFFF',
+        fontSize: 14,
+        lineHeight: 24
+      },
+      axisPointer: {
+        type: 'shadow',
+        shadowStyle: {
+          color: 'rgba(150,150,150,0.2)'
+        }
+      },
     }
   };
   // 设置图表选项
@@ -173,17 +162,10 @@ const echartsfun = (value: ChartData) => {
   const updateChart = () => {
     const newData = [...sourceData];
     const randomIndex = Math.floor(Math.random() * newData.length);
-    newData[randomIndex].value = Math.round(newData[randomIndex].value * (0.9 + Math.random() * 0.2));
+    newData[randomIndex].value = Math.round(newData[randomIndex].value * (Math.random() * 0.5 + 0.7));
 
     newData.sort((a, b) => b.value - a.value);
-
-    // 计算新的X轴最大值并向上取整
-    const newMaxValue = Math.ceil(Math.max(...newData.map(item => item.value)) * 1.2);
-
     myChart.value?.setOption({
-      xAxis: {
-        max: newMaxValue // 更新为新的整数最大值
-      },
       yAxis: {
         data: newData.map(item => item.name)
       },
@@ -244,24 +226,24 @@ onBeforeUnmount(() => {
   width: 90%;
   height: 90%;
   font-size: vh(16);
-  align-items: center !important;
-  justify-content: center !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .box {
   width: 100%;
   height: 100%;
   display: flex;
-  align-items: center !important;
-  justify-content: center !important;
+  align-items: center;
+  justify-content: center;
 }
 
 .BorderBox {
-  width: vw(450);
+  width: 45%;
   height: vh(300);
   max-width: 100%; // 限制最大宽度
   max-height: 100%; // 限制最大高度
-  align-items: center !important;
-  justify-content: center !important;
+  align-items: center;
+  justify-content: center;
 }
 </style>
