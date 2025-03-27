@@ -11,8 +11,9 @@
     <dv-border-box10 class="box">
       <div class="flex flex-row items-center h-100%">
         <span class="head-text">报表时间：</span>
-        <el-date-picker v-model="value1" type="daterange" range-separator="To" start-placeholder="Start date"
-          end-placeholder="End date" size="small" />
+        <el-date-picker size="small" style="width: 280px" v-model="value1" type="daterange" range-separator=""
+          start-placeholder="开始日期" end-placeholder="结束日期">
+        </el-date-picker>
       </div>
     </dv-border-box10>
   </div>

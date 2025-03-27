@@ -7,7 +7,7 @@
   <dv-border-box12 class="borderA" :animate="true">
     <!-- 上部分 -->
     <div class="flex flex-row">
-      <IndexData6></IndexData6>
+      <DataTable></DataTable>
       <div class="flex flex-col justify-between">
         <DaysProportion></DaysProportion>
       </div>
@@ -22,7 +22,7 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick } from "vue";
-import IndexData6 from './IndexData6.vue';
+import DataTable from './DataTable.vue';
 import MaterialTypeDistribution from './MaterialTypeDistribution.vue';
 import MaterialStatus from './MaterialStatus.vue';
 import DaysProportion from './DaysProportion.vue';

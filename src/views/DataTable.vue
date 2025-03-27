@@ -1,10 +1,21 @@
 <template>
-  <dv-border-box6 class="container">
-    <div class="testdiv ">
-      <el-text class="mx-1 text-white">批次</el-text>
-      <el-input v-model="input" style="width: 100px" placeholder="批次" />
+  <dv-border-box6 class="containerMain">
+    <dv-border-box10 class="containertHead m-a mt-10px items-center justify-center">
+      <text class="mx-1 text-white text ">批 次:</text>
+      <input class="textinput" v-model="input" placeholder="批次" />
+      <text class="mx-1 text-white text ml-2">料 号:</text>
+      <input class="textinput" v-model="input" placeholder="料号" />
+      <text class="mx-1 text-white text ml-2">状 态:</text>
+      <input class="textinput" v-model="input" placeholder="状态" />
+      <text class="mx-1 text-white text ">供应商:</text>
+      <input class="textinput" v-model="input" placeholder="供应商" />
+      <el-button class="button  ml-50px vw-50 vh-30">查询</el-button>
+      <el-button class="button vw-50 vh-30">导出</el-button>
+      <el-button class="button vw-50 vh-30">打印</el-button>
+    </dv-border-box10>
+    <div class="containertable items-center justify-center  m-a">
+      <dv-scroll-board ref="scrollBoard" :config="config" style="width:100%;height:100%" />
     </div>
-    <dv-scroll-board ref="scrollBoard" :config="config" style="width:100%;height:80%" />
   </dv-border-box6>
 </template>
 
@@ -15,18 +26,14 @@ import { info } from './api';
 
 const input = ref('')
 
-// 默认列宽（最小宽度）
 const DEFAULT_COLUMN_WIDTH = 80;
-// 列宽padding（额外留白）
 const COLUMN_PADDING = 20;
-// 最大列宽
 const MAX_COLUMN_WIDTH = 300;
 
 const config = reactive({
   header: ['到期时间', '批次', '物料号', '物料描述', '数量', '位置', '超期天数', '供应商', '供应商名称', '计划重检', '实际重检', '重检结果', '状态描述'],
   data: [],
   index: true,
-  rowNum: 15,
   headerHeight: 30,
   columnWidth: [] as number[],
   indexHeader: "#",
@@ -104,20 +111,30 @@ onMounted(() => {
 </script>
 
 <style lang="scss" scoped>
-.container {
+.containerMain {
   width: vw(800);
-  height: vh(500);
-  max-width: 100%;
-  max-height: 100%;
-  margin: vh(20);
+  height: vh(550);
 }
 
-.testdiv {
-  width: 100%;
-  height: 20%;
+.containertHead {
+  width: vw(780);
+  height: vh(100);
 }
 
-.header-item {
-  color: red;
+.containertable {
+  width: vw(780);
+  height: vh(420);
+}
+
+.textinput {
+  font-size: vh(18);
+  width: vw(120);
+  height: vh(30);
+}
+
+.text {
+  font-size: vh(18);
+  width: vw(120);
+  height: vh(30);
 }
 </style>

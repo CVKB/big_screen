@@ -179,7 +179,7 @@ const echartsfun = (value: ChartData) => {
   if (intervalId) {
     clearInterval(intervalId);
   }
-  intervalId = setInterval(updateChart, 500);
+  intervalId = setInterval(updateChart, 5000);
 };
 
 // 获取数据

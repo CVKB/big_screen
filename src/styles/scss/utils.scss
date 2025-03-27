@@ -1,4 +1,4 @@
-// 使用 scss 的 math 函数，https://sass-lang.com/documentation/breaking-changes/slash-div
+//src\styles\scss\utils.scss
 @use "sass:math";
 
 $designWidth: 1280; // 修改为实际设计稿宽度
@@ -20,4 +20,10 @@ html, body {
   overflow: hidden; // 禁止滚动条
   width: 100vw;
   height: 100vh;
+}
+
+.butto1123n {
+  font-size: vh(18);
+  width: vw(120);
+  height: vh(30);
 }
