@@ -2,15 +2,15 @@
   <div class="w-100% h-100% flex justify-between items-center container1">
     <dv-border-box10 class="box">
       <div class="flex flex-row items-center h-100%">
-        <span class="head-text">当前仓库：</span>
-        <el-select v-model="value" placeholder="仓库" size="small" class=" sbu-select">
+        <span class="text-vh-18 font-bold text-white">当前仓库：</span>
+        <el-select v-model="value" placeholder="仓库" size="small" class="vw-100">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value" />
         </el-select>
       </div>
     </dv-border-box10>
     <dv-border-box10 class="box">
       <div class="flex flex-row items-center h-100%">
-        <span class="head-text">报表时间：</span>
+        <span class="text-vh-18 font-bold text-white">报表时间：</span>
         <el-date-picker size="small" style="width: 280px" v-model="value1" type="daterange" range-separator=""
           start-placeholder="开始日期" end-placeholder="结束日期">
         </el-date-picker>
@@ -44,10 +44,6 @@ const options = [
     value: 'SBU5',
     label: 'SBU5',
   },
-  {
-    value: 'SBU8',
-    label: 'SBU8',
-  },
 ]
 
 </script>
@@ -67,11 +63,5 @@ const options = [
   padding: 0 vh(10);
   margin-left: vw(20);
   margin-right: vw(20);
-}
-
-.head-text {
-  font-size: vh(16);
-  font-weight: bold;
-  color: white;
 }
 </style>

@@ -1,17 +1,21 @@
 <template>
   <dv-border-box6 class="containerMain">
     <dv-border-box10 class="containertHead m-a mt-10px items-center justify-center">
-      <text class="mx-1 text-white text ">批 次:</text>
-      <input class="textinput" v-model="input" placeholder="批次" />
-      <text class="mx-1 text-white text ml-2">料 号:</text>
-      <input class="textinput" v-model="input" placeholder="料号" />
-      <text class="mx-1 text-white text ml-2">状 态:</text>
-      <input class="textinput" v-model="input" placeholder="状态" />
-      <text class="mx-1 text-white text ">供应商:</text>
-      <input class="textinput" v-model="input" placeholder="供应商" />
-      <el-button class="button  ml-50px vw-50 vh-30">查询</el-button>
-      <el-button class="button vw-50 vh-30">导出</el-button>
-      <el-button class="button vw-50 vh-30">打印</el-button>
+      <div>
+        <text class="mx-1 text-white text ">批 次:</text>
+        <input class="textinput" v-model="input" placeholder="批次" />
+        <text class="mx-1 text-white text ml-2">料 号:</text>
+        <input class="textinput" v-model="input" placeholder="料号" />
+        <text class="mx-1 text-white text ml-2">状 态:</text>
+        <input class="textinput" v-model="input" placeholder="状态" />
+        <text class="mx-1 text-white text ">供应商:</text>
+        <input class="textinput" v-model="input" placeholder="供应商" />
+      </div>
+      <div class="flex justify-end gap-4 mr-4 mt-2">
+        <el-button class="button  ml-50px text-vh-18 vw-50 vh-30">查询</el-button>
+        <el-button class="button vw-50 text-vh-18 vh-30">导出</el-button>
+        <el-button class="button vw-50 text-vh-18 vh-30">打印</el-button>
+      </div>
     </dv-border-box10>
     <div class="containertable items-center justify-center  m-a">
       <dv-scroll-board ref="scrollBoard" :config="config" style="width:100%;height:100%" />

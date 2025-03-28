@@ -1,4 +1,3 @@
-@ -1,153 +0,0 @@
 <template>
   <dv-border-box8 class="BorderBox">
     <dv-loading v-if="loading1"></dv-loading>
@@ -12,8 +11,9 @@ import * as echarts from 'echarts';
 import { infopie } from './api';
 
 // 定义接口类型 - 图表数据结构
+// 状态码
 interface ChartData {
-  code: number;          // 状态码
+  code: number;
   data: {
     [key: string]: number; // 键值对数据，表示不同来源及其数值
   };
@@ -96,6 +96,11 @@ const echartsfun = (value: ChartData) => {
   if (option) {
     myChart.value.setOption(option);
   }
+
+  // 窗口大小改变时重新调整图表大小
+  window.addEventListener('resize', () => {
+    myChart.value?.resize();
+  });
 };
 
 // 获取数据
@@ -133,6 +138,10 @@ onBeforeUnmount(() => {
   if (myChart.value) {
     myChart.value.dispose();
   }
+  // 移除窗口大小改变事件监听
+  window.removeEventListener('resize', () => {
+    myChart.value?.resize();
+  });
 });
 </script>
 

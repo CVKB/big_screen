@@ -10,6 +10,25 @@
       <DataTable></DataTable>
       <div class="flex flex-col justify-between">
         <DaysProportion></DaysProportion>
+        <div>
+          <dv-border-box-8 class="rightSide2  vh-270 vw-450 text-white">
+            <dv-border-box-10>统计信息</dv-border-box-10>
+            <dv-border-box-12>总物料项数：56100PCS</dv-border-box-12>
+            <dv-border-box-12>超期物料总数：9000PCS</dv-border-box-12>
+            <dv-border-box-12>重检物料总数：1000PCS</dv-border-box-12>
+            <dv-border-box-12>重检合格率：20%</dv-border-box-12>
+            <dv-border-box-12>
+              <span class="text-red ">超期未处理：200(20%)</span>
+            </dv-border-box-12>
+            <dv-border-box-12>
+              <span class=" text-yellow ">超期待处理：200(20%)</span>
+            </dv-border-box-12>
+            <dv-border-box-12>
+              <span class=" text-green ">超期已处理：200(20%)</span>
+            </dv-border-box-12>
+          </dv-border-box-8>
+        </div>
+
       </div>
     </div>
     <!-- 下部分  -->
@@ -48,5 +67,18 @@ onMounted(() => {
 .borderA {
   height: vh(900);
   width: 100%;
+}
+
+.rightSide2 {
+  ::v-deep .border-box-content {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-items: center;
+    height: vh(32);
+    font-size: vh(12);
+    color: white;
+    margin-top: 10px;
+  }
 }
 </style>
