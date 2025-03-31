@@ -86,7 +86,6 @@ const calculateColumnWidths = (headers: string[], data: [][]) => {
 
     return Math.ceil(finalWidth);
   });
-  console.log(columnWidths);
   return columnWidths;
 };
 

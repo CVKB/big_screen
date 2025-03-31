@@ -27,13 +27,12 @@ const refecharts = ref<HTMLElement | null>(null);  // ECharts DOM引用
 const myChart = ref<ECharts | null>(null); // 图表实例
 let intervalId: number | null = null; // 定时器ID
 
-// 初始化图表 - 动态排序条形图
+// 初始化图表 - 基础柱形图
 const echartsfun = (value: ChartData) => {
   if (!refecharts.value) {
     console.error('DOM 元素未找到');
     return;
   }
-  console.log(value.data);
 
   // 如果图表实例已存在，先销毁
   if (myChart.value) {
@@ -61,7 +60,7 @@ const echartsfun = (value: ChartData) => {
       ['#F56C6C', '#FF9E9E']
     ];
     const index = dataIndex % colorList.length;
-    return new echarts.graphic.LinearGradient(0, 0, 1, 0, [
+    return new echarts.graphic.LinearGradient(0, 0, 0, 1, [ // 修改渐变方向为垂直
       { offset: 0, color: colorList[index][0] },
       { offset: 1, color: colorList[index][1] }
     ]);
@@ -71,7 +70,7 @@ const echartsfun = (value: ChartData) => {
   const option: EChartsOption = {
     // 标题配置
     title: {
-      text: '超期物料处理状态分布图', // 主标题文本
+      text: '超期物料类型分布图', // 主标题文本
       left: 'center',      // 标题水平居中
       textStyle: {         // 标题文本样式
         color: '#FFFFFF', // 修改为纯白色（去掉透明度）
@@ -87,46 +86,51 @@ const echartsfun = (value: ChartData) => {
       top: '15%',     // 图表与容器顶部的距离（防止标题与图表重叠）
       containLabel: true // 网格区域是否包含坐标轴的刻度标签
     },
-    // X轴配置（数值轴）
+    // X轴配置（类目轴）
     xAxis: {
-      type: 'value',  // 数值轴类型
+      type: 'category',  // 类目轴类型
+      data: categories,  // 类目数据（物料名称数组）
       axisLabel: {
         color: '#FFFFFF', // 标签颜色
         fontSize: 14,
+        interval: 0,     // 强制显示所有标签
       },
-      boundaryGap: ['0%', '20%'], // 坐标轴两端空白策略
-      splitLine: {    // 分隔线配置
-        show: true   // 显示网格线（X轴方向）
+      axisTick: {
+        alignWithLabel: true // 刻度与标签对齐
       }
     },
 
-    // Y轴配置（类目轴）
+    // Y轴配置（数值轴）
     yAxis: {
-      type: 'category', // 类目轴类型
-      data: categories, // 类目数据（物料名称数组）
+      type: 'value', // 数值轴类型
       axisLabel: {
         color: '#FFFFFF',
-        fontSize: 14,
+        fontSize: 12,
       },
+      boundaryGap: ['0%', '15%'], // 坐标轴两端空白策略
+      splitLine: {    // 分隔线配置
+        show: true   // 显示网格线（Y轴方向）
+      }
     },
 
     // 系列列表（这里只有一个柱状图系列）
     series: [{
       name: '数值',    // 系列名称（用于提示框和图例）
       type: 'bar',    // 柱状图类型
-      data: values,   // 系列数据（对应Y轴类别的数值）
+      data: values,   // 系列数据（对应X轴类别的数值）
       label: {
         show: true,
-        position: 'right',
+        position: 'top', // 标签显示在柱子上方
         formatter: '{c}',
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 14,
         backgroundColor: 'rgba(0,0,0,0.7)',
       },
       itemStyle: {     // 图形样式
         color: (params) => getItemColor(params.dataIndex),
-        borderRadius: [0, 4, 4, 0] // 柱条圆角（右上和右下角）
+        borderRadius: [4, 4, 0, 0] // 柱条圆角（左上和右上角）
       },
+      barWidth: '60%' // 控制柱条宽度
     }],
     // 提示框配置
     tooltip: {
@@ -137,8 +141,8 @@ const echartsfun = (value: ChartData) => {
       borderWidth: 1,
       textStyle: {
         color: '#FFFFFF',
-        fontSize: 14,
-        lineHeight: 24
+        fontSize: 12,
+        lineHeight: 36
       },
       axisPointer: {
         type: 'shadow',
@@ -166,7 +170,7 @@ const echartsfun = (value: ChartData) => {
 
     newData.sort((a, b) => b.value - a.value);
     myChart.value?.setOption({
-      yAxis: {
+      xAxis: {
         data: newData.map(item => item.name)
       },
       series: [{
@@ -187,7 +191,7 @@ const getdata = async () => {
   try {
     const { data } = await infotype();
     if (data.code === 200) {
-      console.log(data.data);
+     (data.data);
       loading1.value = false;
       nextTick(() => {
         if (refecharts.value) {

@@ -33,7 +33,6 @@ const echartsfun = (value: ChartData) => {
     console.error('DOM 元素未找到');
     return;
   }
-  console.log(value.data);
 
   // 如果图表实例已存在，先销毁
   if (myChart.value) {
@@ -89,25 +88,29 @@ const echartsfun = (value: ChartData) => {
     },
     // X轴配置（数值轴）
     xAxis: {
-      type: 'value',  // 数值轴类型
-      axisLabel: {
-        color: '#FFFFFF', // 标签颜色
-        fontSize: 14,
-      },
-      boundaryGap: ['0%', '20%'], // 坐标轴两端空白策略
-      splitLine: {    // 分隔线配置
-        show: true   // 显示网格线（X轴方向）
-      }
-    },
-
-    // Y轴配置（类目轴）
-    yAxis: {
       type: 'category', // 类目轴类型
       data: categories, // 类目数据（物料名称数组）
       axisLabel: {
         color: '#FFFFFF',
         fontSize: 14,
+        interval: 0,     // 强制显示所有标签
       },
+      axisTick: {
+        alignWithLabel: true // 刻度与标签对齐
+      }
+    },
+
+    // Y轴配置（类目轴）
+    yAxis: {
+      type: 'value',  // 数值轴类型
+      axisLabel: {
+        color: '#FFFFFF', // 标签颜色
+        fontSize: 12,
+      },
+      boundaryGap: ['0%', '15%'], // 坐标轴两端空白策略
+      splitLine: {    // 分隔线配置
+        show: true   // 显示网格线（X轴方向）
+      }
     },
 
     // 系列列表（这里只有一个柱状图系列）
@@ -117,15 +120,15 @@ const echartsfun = (value: ChartData) => {
       data: values,   // 系列数据（对应Y轴类别的数值）
       label: {
         show: true,
-        position: 'right',
+        position: 'top',
         formatter: '{c}',
         color: '#FFFFFF',
-        fontSize: 16,
+        fontSize: 14,
         backgroundColor: 'rgba(0,0,0,0.7)',
       },
       itemStyle: {     // 图形样式
         color: (params) => getItemColor(params.dataIndex),
-        borderRadius: [0, 4, 4, 0] // 柱条圆角（右上和右下角）
+        borderRadius: [4, 4, 0, 0]// 柱条圆角（左上和右上角）
       },
     }],
     // 提示框配置
@@ -137,8 +140,8 @@ const echartsfun = (value: ChartData) => {
       borderWidth: 1,
       textStyle: {
         color: '#FFFFFF',
-        fontSize: 14,
-        lineHeight: 24
+        fontSize: 12,
+        lineHeight: 36
       },
       axisPointer: {
         type: 'shadow',
@@ -187,7 +190,6 @@ const getdata = async () => {
   try {
     const { data } = await info3();
     if (data.code === 200) {
-      console.log(data.data);
       loading1.value = false;
       nextTick(() => {
         if (refecharts.value) {
