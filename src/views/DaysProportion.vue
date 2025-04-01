@@ -1,7 +1,7 @@
 <template>
-  <dv-border-box8 class="BorderBox">
+  <dv-border-box8 class="vw-450 vh-350 max-w100% max-h100%">
     <dv-loading v-if="loading1"></dv-loading>
-    <div ref="refecharts" class="interior" v-else></div>
+    <div ref="refecharts" class="w-95% h-95% text-vh-16 mt-4" v-else></div>
   </dv-border-box8>
 </template>
 
@@ -152,12 +152,5 @@ onBeforeUnmount(() => {
   font-size: vh(16);
   margin-left: vw(10);
   margin-top: vh(10);
-}
-
-.BorderBox {
-  width: vw(450);
-  height: vh(300);
-  max-width: 100%; // 限制最大宽度
-  max-height: 100%; // 限制最大高度
 }
 </style>
