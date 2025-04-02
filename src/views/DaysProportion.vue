@@ -1,8 +1,8 @@
 <template>
-  <dv-border-box8 class="vw-450 vh-350 max-w100% max-h100%">
+  <dv-border-box13 class="vw-450 vh-340 max-w100% max-h100% mt-2">
     <dv-loading v-if="loading1"></dv-loading>
-    <div ref="refecharts" class="w-95% h-95% text-vh-16 mt-4" v-else></div>
-  </dv-border-box8>
+    <div ref="refecharts" class="w-95% h-95% text-vh-16" v-else></div>
+  </dv-border-box13>
 </template>
 
 <script lang="ts" setup>
@@ -49,21 +49,28 @@ const echartsfun = (value: ChartData) => {
   // 图表配置项
   const option = {
     title: {
-      text: '',  // 图表标题
+      show: true,
+      text: '超期天数区间占比',  // 图表标题
       left: 'center',
+      top: 15,
+      padding: 5,
       textStyle: {
-        color: '#333',
-        fontSize: 16,
+        color: '#FFFFFF',
+        fontSize: 18,
       }
     },
-    tooltip: {
+    tooltip: {//悬停提示
       trigger: 'item',     // 触发类型为数据项
       formatter: '{a}<br/>{b}: {c} ({d}%)'  // 提示框格式'{a}<br/>{b}: {c} ({d}%)'
     },
     legend: {
       orient: 'horizontal',   // 图例排列
       bottom: 0,
-      data: Object.keys(value.data)  // 图例数据
+      data: Object.keys(value.data),  // 图例数据
+      textStyle: {
+        color: '#FFFFFF',
+        fontSize: 15,
+      }
     },
     series: [
       {
@@ -74,7 +81,9 @@ const echartsfun = (value: ChartData) => {
         data: data,        // 数据
         label: {           // 标签设置
           show: true,
-          formatter: '{b}（{d}%）'
+          formatter: '{b}（{d}%）',
+          color: '#FFFFFF',
+          fontSize: 10,
         },
         emphasis: {        // 高亮样式
           itemStyle: {
@@ -85,8 +94,8 @@ const echartsfun = (value: ChartData) => {
         },
         itemStyle: {      // 图形样式
           borderRadius: 5,  // 圆角
-          borderColor: '#fff',  // 边框颜色
-          borderWidth: 2    // 边框宽度
+          borderColor: '#ffffff',  // 边框颜色
+          borderWidth: 1    // 边框宽度
         }
       }
     ],
