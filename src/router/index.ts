@@ -1,7 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router'; // 使用 type-only import
 import HomeIndex from '../views/HomeIndex.vue'
-import HeadView from '../views/HeadView.vue'
+import Three from '../views/ThreeView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -10,9 +10,9 @@ const routes: Array<RouteRecordRaw> = [
     component: HomeIndex,
   },
   {
-    path: '/head',
-    name: 'head',
-    component: HeadView,
+    path: '/three',
+    name: 'three',
+    component: Three,
   },
   // 其他路由...
 ];
