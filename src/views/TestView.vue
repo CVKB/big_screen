@@ -56,7 +56,7 @@ function initThree() {
 
   // 加载模型
   const loader = new GLTFLoader()
-  loader.load('/models/factory.glb', (gltf) => {
+  loader.load('/models/factory.glb', (gltf: { scene: THREE.Object3D<THREE.Object3DEventMap> }) => {
     gltf.scene.traverse((child) => {
       if (child instanceof THREE.Mesh) {
         child.userData.originalMaterial = child.material

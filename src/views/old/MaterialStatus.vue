@@ -11,7 +11,7 @@
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
 import type { EChartsOption, ECharts } from 'echarts';
-import { info3 } from './api';
+import { info3 } from '../api';
 
 // 定义接口类型 - 图表数据结构
 interface ChartData {

@@ -8,7 +8,7 @@
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, onBeforeUnmount } from 'vue';
 import * as echarts from 'echarts';
-import { infopie } from './api';
+import { infopie } from '../api';
 
 // 定义接口类型 - 图表数据结构
 // 状态码

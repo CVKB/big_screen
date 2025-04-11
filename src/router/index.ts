@@ -1,30 +1,30 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import type { RouteRecordRaw } from 'vue-router'; // 使用 type-only import
-import HomeIndex from '../views/HomeIndex.vue'
-import NewHome from '../views/NewHome.vue'
+import HomeIndex from '../views/old/HomeIndex.vue'
+import NewHome from '../views/SbuView.vue'
 import IndexView from '../views/IndexView.vue'
-import Three from '../views/ThreeView.vue'
+import TestView from '../views/TestView.vue'
 
 const routes: Array<RouteRecordRaw> = [
   {
     path: '/',
     name: 'index',
-    component: NewHome,
+    component: IndexView,
   },
   {
-    path: '/index1',
+    path: '/index_old',
     name: 'index1',
     component: HomeIndex,
   },
   {
-    path: '/index2',
-    name: 'index2',
-    component: IndexView,
+    path: '/sub',
+    name: 'sub',
+    component: NewHome,
   },
   {
-    path: '/three',
-    name: 'three',
-    component: Three,
+    path: '/test',
+    name: 'test',
+    component: TestView,
   },
   // 其他路由...
 ];

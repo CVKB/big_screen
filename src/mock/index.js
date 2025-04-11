@@ -69,13 +69,105 @@ Mock.mock("/api/infotype", "get", {
     "PCB": Math.floor(Math.random() * 50000)
   }
 });
-  Mock.mock("/api/infopie", "get", {
-    code: 200,
-    data: {
-      '0~7天': 50,
-      '8~14天': 100,
-      '15~30天': 200,
-      '30~60天': 500,
-      '60天以上': 999,
+
+//饼图数据
+Mock.mock("/api/infopie", "get", {
+  code: 200,
+  data: [
+    {
+      title: "SBU1",
+      data: [
+        { name: '0~7天', value: Mock.Random.integer(100, 700) },
+        { name: '8~14天', value: Mock.Random.integer(200, 1400) },
+        { name: '15~30天', value: Mock.Random.integer(500, 2800) },
+        { name: '30~60天', value: Mock.Random.integer(1000, 5600) },
+        { name: '60天以上', value: Mock.Random.integer(2000, 11200) }
+      ],
+      keyValueData: {
+        "总物料项数": Mock.Random.integer(1000, 5000),
+        "超期物料总数": Mock.Random.integer(100, 500),
+        "重检物料总数": Mock.Random.integer(50, 300),
+        "重检合格率": (Mock.Random.float(70, 100, 2)).toFixed(2) + '%',
+        "超期未处理": Mock.Random.integer(20, 100),
+        "超期待处理": Mock.Random.integer(30, 150),
+        "超期已处理": Mock.Random.integer(50, 300)
+      }
     },
-  });
+    {
+      title: "SBU2",
+      data: [
+        { name: '0~7天', value: Mock.Random.integer(100, 700) },
+        { name: '8~14天', value: Mock.Random.integer(200, 1400) },
+        { name: '15~30天', value: Mock.Random.integer(500, 2800) },
+        { name: '30~60天', value: Mock.Random.integer(1000, 5600) },
+        { name: '60天以上', value: Mock.Random.integer(2000, 11200) }
+      ],
+      keyValueData: {
+        "总物料项数": Mock.Random.integer(1000, 5000),
+        "超期物料总数": Mock.Random.integer(100, 500),
+        "重检物料总数": Mock.Random.integer(50, 300),
+        "重检合格率": (Mock.Random.float(70, 100, 2)).toFixed(2) + '%',
+        "超期未处理": Mock.Random.integer(20, 100),
+        "超期待处理": Mock.Random.integer(30, 150),
+        "超期已处理": Mock.Random.integer(50, 300)
+      }
+    },
+    {
+      title: "SBU4",
+      data:[
+        { name: '0~7天', value: Mock.Random.integer(100, 700) },
+        { name: '8~14天', value: Mock.Random.integer(200, 1400) },
+        { name: '15~30天', value: Mock.Random.integer(500, 2800) },
+        { name: '30~60天', value: Mock.Random.integer(1000, 5600) },
+        { name: '60天以上', value: Mock.Random.integer(2000, 11200) }
+      ],
+      keyValueData: {
+        "总物料项数": Mock.Random.integer(1000, 5000),
+        "超期物料总数": Mock.Random.integer(100, 500),
+        "重检物料总数": Mock.Random.integer(50, 300),
+        "重检合格率": (Mock.Random.float(70, 100, 2)).toFixed(2) + '%',
+        "超期未处理": Mock.Random.integer(20, 100),
+        "超期待处理": Mock.Random.integer(30, 150),
+        "超期已处理": Mock.Random.integer(50, 300)
+      }
+    },
+    {
+      title: "SBU5",
+      data: [
+        { name: '0~7天', value: Mock.Random.integer(100, 700) },
+        { name: '8~14天', value: Mock.Random.integer(200, 1400) },
+        { name: '15~30天', value: Mock.Random.integer(500, 2800) },
+        { name: '30~60天', value: Mock.Random.integer(1000, 5600) },
+        { name: '60天以上', value: Mock.Random.integer(2000, 11200) }
+      ],
+      keyValueData: {
+        "总物料项数": Mock.Random.integer(1000, 5000),
+        "超期物料总数": Mock.Random.integer(100, 500),
+        "重检物料总数": Mock.Random.integer(50, 300),
+        "重检合格率": (Mock.Random.float(70, 100, 2)).toFixed(2) + '%',
+        "超期未处理": Mock.Random.integer(20, 100),
+        "超期待处理": Mock.Random.integer(30, 150),
+        "超期已处理": Mock.Random.integer(50, 300)
+      }
+    },
+    {
+      title: "SBU8",
+      data:[
+        { name: '0~7天', value: Mock.Random.integer(100, 700) },
+        { name: '8~14天', value: Mock.Random.integer(200, 1400) },
+        { name: '15~30天', value: Mock.Random.integer(500, 2800) },
+        { name: '30~60天', value: Mock.Random.integer(1000, 5600) },
+        { name: '60天以上', value: Mock.Random.integer(2000, 11200) }
+      ],
+      keyValueData: {
+        "总物料项数": Mock.Random.integer(1000, 5000),
+        "超期物料总数": Mock.Random.integer(100, 500),
+        "重检物料总数": Mock.Random.integer(50, 300),
+        "重检合格率": (Mock.Random.float(70, 100, 2)).toFixed(2) + '%',
+        "超期未处理": Mock.Random.integer(20, 100),
+        "超期待处理": Mock.Random.integer(30, 150),
+        "超期已处理": Mock.Random.integer(50, 300)
+      }
+    }
+  ]
+});

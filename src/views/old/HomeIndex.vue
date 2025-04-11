@@ -55,12 +55,10 @@
 
 <script lang="ts" setup>
 import { ref, onMounted, nextTick, computed, onBeforeUnmount } from "vue";
-import DataTable from './DataTable.vue';
 import MaterialTypeDistribution from './MaterialTypeDistribution.vue';
 import MaterialStatus from './MaterialStatus.vue';
 import DaysProportion from './DaysProportion.vue';
-// import CapsuleChart from './CapsuleChart.vue';
-
+import DataTable from './DataTable.vue';
 import HeadView from './HeadView.vue';
 import { useTransition } from "@vueuse/core";
 

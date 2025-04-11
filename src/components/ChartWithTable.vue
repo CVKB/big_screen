@@ -1,21 +1,25 @@
 <template>
-  <div class="chart-with-table">
+  <div class=" w-full my-2 py-5 px-2 flex justify-center flex-col items-center border-2 border-solid ">
     <!-- 标题 -->
-    <h3 class="chart-title">{{ title }}</h3>
+    <h1 class=" text-center mb-15px text-white">{{ title }}</h1>
 
     <!-- 图表 -->
-    <div ref="chartRef" class="chart" />
+    <div ref="chartRef" class="w-full vh-400 mb-15px justify-center items-center"></div>
 
     <!-- 表格 -->
-    <div class="table-container">
-      <div class="table-header">
-        <span>Key</span>
-        <span>Value</span>
+    <div class=" mt-2 w-full mx-2">
+      <div class="font-bold p-1 flex  items-center justify-center border-2 border-solid border-black text-white">统计信息
       </div>
-      <div class="table-body">
-        <div v-for="(value, key) in keyValueData" :key="key" class="table-row">
-          <span class="table-cell">{{ key }}</span>
-          <span class="table-cell">{{ value }}</span>
+      <div v-for="(value, key) in keyValueData" :key="key"
+        class=" flex justify-between border-1 border-solid border-black">
+        <!-- 左侧 key -->
+        <div class="h-30px w-50% border-1 border-solid border-black flex items-center text-white">
+          <span class=" ml-1">{{ key }}</span>
+        </div>
+        <!-- 右侧 value -->
+        <div
+          class=" h-30px w-50% border-1 border-solid border-black flex items-center justify-center text-right text-white">
+          <span>{{ value }}</span>
         </div>
       </div>
     </div>
@@ -23,7 +27,7 @@
 </template>
 
 <script lang="ts" setup>
-import { onMounted, ref } from 'vue';
+import { onMounted, onUnmounted, ref } from 'vue';
 import * as echarts from 'echarts';
 
 const { title, chartData, keyValueData } = defineProps<{
@@ -35,119 +39,145 @@ const { title, chartData, keyValueData } = defineProps<{
 const chartRef = ref<HTMLDivElement | null>(null);
 
 onMounted(() => {
-  if (chartRef.value) {
-    const myChart = echarts.init(chartRef.value);
+  if (!chartRef.value) return;
 
-    const option = {
-      tooltip: {
-        trigger: 'item',
+  const myChart = echarts.init(chartRef.value);
+  let intervalId: number | null = null;
+  let currentIndex = -1;
+  let isPaused = false;
+
+  const option = {
+    // 提示框配置
+    tooltip: {
+      trigger: 'item',
+      confine: true, // 强制 tooltip 不超出容器边界
+      formatter: '{a} <br/>{b}: {c} ({d}%)'
+    },
+    legend: {
+      top: '5%',
+      left: 'center',
+      itemStyle: {
+        borderRadius: 5, // 饼图区块的圆角半径
+        borderColor: '#ffffff', // 区块边框颜色
+        borderWidth: 2, // 区块边框宽度
       },
-      series: [
-        {
-          name: 'Access From',
-          type: 'pie',
-          radius: ['40%', '70%'],
-          avoidLabelOverlap: false,
-          itemStyle: {
-            borderRadius: 10,
-            borderColor: '#ffffff',
-            borderWidth: 2,
-          },
-          label: {
-            show: false,
-            position: 'center',
-          },
-          emphasis: {
-            label: {
-              show: true,
-              fontSize: 40,
-              fontWeight: 'bold',
-            },
-          },
-          labelLine: {
-            show: false,
-          },
-          data: chartData, // 使用传入的图表数据
+      textStyle: {
+        color: '#ffffff',
+      }
+    },
+    // 系列列表，每个系列通过 type 决定自己的图表类型
+    series: [
+      {
+        name: '超期天数', // 系列名称，用于提示框显示和图例筛选
+        type: 'pie', // 图表类型，这里是饼图
+        top: '20%',
+        // 饼图的半径配置，['40%', '70%']表示内半径40%，外半径70%，形成环形图效果
+        radius: ['40%', '70%'],
+        // 是否避免标签重叠，默认为true，这里设为false可能为了特定布局需求
+        avoidLabelOverlap: true,
+        // 图形样式配置
+        itemStyle: {
+          borderRadius: 5, // 饼图区块的圆角半径
+          borderColor: '#ffffff', // 区块边框颜色
+          borderWidth: 2, // 区块边框宽度
         },
-      ],
-    };
+        color: ['#73C0DE', '#0B4FB4', '#FAC858', '#D037F7', '#EE6666'],
+        // 标签配置
+        label: {
+          show: false, // 默认不显示标签
+          position: 'center', // 标签位置居中
+        },
+        // 高亮状态下的样式配置
+        emphasis: {
+          label: {
+            show: true, // 高亮时显示标签
+            fontSize: 20, // 标签字体大小
+            fontWeight: 'bold', // 标签字体粗细
+          },
+        },
+        // 标签的视觉引导线配置
+        labelLine: {
+          show: true, // 不显示视觉引导线
+        },
+        data: chartData,
+      },
+    ],
+  };
 
-    myChart.setOption(option);
+  myChart.setOption(option);
 
-    let currentIndex = -1;
-    setInterval(() => {
-      const dataLen = chartData.length;
-
-      // 取消之前的高亮
+  const clearCurrent = () => {
+    if (currentIndex >= 0 && currentIndex < chartData.length) {
       myChart.dispatchAction({
         type: 'downplay',
         seriesIndex: 0,
         dataIndex: currentIndex,
       });
-
-      // 更新索引
-      currentIndex = (currentIndex + 1) % dataLen;
-
-      // 高亮当前项
       myChart.dispatchAction({
-        type: 'highlight',
-        seriesIndex: 0,
-        dataIndex: currentIndex,
+        type: 'hideTip',
       });
+    }
+  };
 
-      // 显示 tooltip
-      myChart.dispatchAction({
-        type: 'showTip',
-        seriesIndex: 0,
-        dataIndex: currentIndex,
-      });
-    }, 1500); // 每2秒轮播一次
-  }
+  const highlightNext = () => {
+    if (isPaused || chartData.length === 0) return;
+
+    clearCurrent();
+
+    currentIndex = (currentIndex + 1) % chartData.length;
+
+    myChart.dispatchAction({
+      type: 'highlight',
+      seriesIndex: 0,
+      dataIndex: currentIndex,
+    });
+    myChart.dispatchAction({
+      type: 'showTip',
+      seriesIndex: 0,
+      dataIndex: currentIndex,
+    });
+  };
+
+  const startLoop = () => {
+    if (intervalId === null) {
+      intervalId = window.setInterval(highlightNext, 5000);
+    }
+  };
+
+  const stopLoop = () => {
+    if (intervalId !== null) {
+      clearInterval(intervalId);
+      intervalId = null;
+    }
+  };
+
+  // 鼠标悬停暂停
+  const handleMouseOver = () => {
+    isPaused = true;
+    stopLoop();
+    clearCurrent();
+  };
+
+  // 鼠标移出继续循环
+  const handleMouseOut = () => {
+    isPaused = false;
+    startLoop();
+    highlightNext(); // 立即切换一次，避免等待5秒
+  };
+
+  myChart.getZr().on('mouseover', handleMouseOver);
+  myChart.getZr().on('mouseout', handleMouseOut);
+
+  // 初始化启动循环
+  startLoop();
+
+  onUnmounted(() => {
+    stopLoop();
+    myChart.getZr().off('mouseover', handleMouseOver);
+    myChart.getZr().off('mouseout', handleMouseOut);
+    myChart.dispose();
+  });
 });
 </script>
 
-<style scoped>
-.chart-with-table {
-  width: 100%;
-  margin: 20px 0;
-}
-
-.chart-title {
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-.chart {
-  width: 100%;
-  height: 300px;
-  margin-bottom: 15px;
-}
-
-.table-container {
-  margin-top: 20px;
-  width: 100%;
-}
-
-.table-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 8px;
-  background-color: #f0f0f0;
-  font-weight: bold;
-}
-
-.table-body {
-  padding: 8px;
-}
-
-.table-row {
-  display: flex;
-  justify-content: space-between;
-  padding: 4px 0;
-  border-bottom: 1px solid #ddd;
-}
-
-.table-cell {
-  padding: 4px;
-}
-</style>
+<style scoped></style>

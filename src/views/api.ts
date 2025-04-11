@@ -1,3 +1,4 @@
+//api.ts
 import requests from "@/utlis/requests";
 
 // 折线图接口

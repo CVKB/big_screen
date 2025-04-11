@@ -26,7 +26,7 @@
 <script lang="ts" setup>
 import { reactive, ref, onMounted, nextTick } from 'vue';
 import type { ScrollBoard } from '@kjgl77/datav-vue3';
-import { info } from './api';
+import { info } from '../api';
 
 const batch = ref('')
 const partnumber = ref('')
